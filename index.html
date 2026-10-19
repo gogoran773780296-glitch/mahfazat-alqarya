@@ -2,129 +2,836 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#126b48">
 <title>محفظة القرية</title>
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Tahoma,Arial;background:#f2f6f3;color:#18372b}
-header{background:#176b45;color:white;padding:24px 18px;border-radius:0 0 22px 22px}
-header h1{margin:0 0 8px;font-size:25px}
-header p{margin:0;font-size:14px}
-main{padding:18px;max-width:600px;margin:auto}
-.card{background:white;padding:20px;border-radius:16px;margin-bottom:16px;box-shadow:0 3px 12px #0000000a}
-.label{display:block;margin:12px 0 7px}
-input{width:100%;padding:13px;border:1px solid #ccd9d0;border-radius:10px;font-size:16px}
-button{width:100%;padding:14px;border:0;border-radius:10px;background:#176b45;color:white;font-size:16px;margin-top:14px;cursor:pointer}
-.secondary{background:#e4f1e8;color:#176b45}
-.balance{font-size:28px;color:#176b45;font-weight:bold}
-.small{font-size:13px;color:#687970}
-.notice{padding:12px;background:#e4f1e8;border-radius:10px;line-height:1.8;font-size:13px}
-h3{margin-top:0}
-#result{margin-top:12px;line-height:1.8;overflow-wrap:anywhere}
-footer{text-align:center;padding:20px;color:#75857b;font-size:12px}
+:root {
+    --green: #126b48;
+    --dark: #0a4530;
+    --bg: #f2f6f3;
+    --white: #ffffff;
+    --text: #20352a;
+    --muted: #728078;
+    --border: #e1e9e3;
+    --gold: #e5b95c;
+    --red: #c33b3b;
+}
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: Tahoma, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+button, input {
+    font-family: inherit;
+}
+button {
+    cursor: pointer;
+}
+header {
+    padding: 23px 18px 32px;
+    color: white;
+    background: linear-gradient(135deg, var(--dark), var(--green));
+    border-radius: 0 0 27px 27px;
+}
+.header-inner, main {
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.13);
+    border: 1px solid rgba(255,255,255,.3);
+    display: grid;
+    place-items: center;
+    font-size: 28px;
+}
+.brand h1 {
+    font-size: 23px;
+    margin: 0 0 6px;
+}
+.brand p {
+    font-size: 12px;
+    margin: 0;
+    opacity: .85;
+}
+main {
+    padding: 18px;
+}
+.card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 19px;
+    margin-bottom: 16px;
+    box-shadow: 0 5px 18px rgba(15,50,30,.035);
+}
+.balance-card {
+    margin-top: -5px;
+    color: white;
+    background: linear-gradient(135deg, #14764e, #0b4b34);
+    border: none;
+}
+.balance-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.balance-top p {
+    margin: 0;
+    font-size: 14px;
+    opacity: .9;
+}
+.demo-badge {
+    font-size: 11px;
+    padding: 6px 9px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.15);
+}
+.balance-amount {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 18px 0 9px;
+    overflow-wrap: anywhere;
+}
+.account-info {
+    font-size: 13px;
+    opacity: .9;
+}
+.section-title {
+    font-size: 18px;
+    margin: 23px 2px 13px;
+}
+.user-select, input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d5e0d8;
+    border-radius: 11px;
+    background: white;
+    font-size: 15px;
+    color: var(--text);
+    outline: none;
+}
+input:focus, select:focus {
+    border-color: var(--green);
+}
+.label {
+    display: block;
+    margin: 14px 0 7px;
+    font-size: 13px;
+    font-weight: bold;
+}
+.services {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+}
+.service {
+    min-height: 110px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 16px 8px;
+    text-align: center;
+    color: var(--text);
+    font-size: 14px;
+}
+.service:active {
+    transform: scale(.98);
+}
+.service-icon {
+    display: block;
+    font-size: 27px;
+    margin-bottom: 10px;
+}
+.primary, .secondary, .danger {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 11px;
+    margin-top: 13px;
+    font-size: 15px;
+    font-weight: bold;
+}
+.primary {
+    background: var(--green);
+    color: white;
+}
+.secondary {
+    background: #e9f4ed;
+    color: var(--green);
+}
+.danger {
+    background: #fff0f0;
+    color: var(--red);
+}
+.message {
+    padding: 12px;
+    margin-top: 13px;
+    border-radius: 10px;
+    background: #edf7f0;
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+.message.error {
+    background: #fff0f0;
+    color: #a52b2b;
+}
+.message:empty {
+    display: none;
+}
+.transaction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+}
+.transaction:last-child {
+    border-bottom: none;
+}
+.tx-title {
+    font-size: 14px;
+    font-weight: bold;
+}
+.tx-date {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+}
+.tx-amount {
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: bold;
+}
+.outgoing {
+    color: var(--red);
+}
+.incoming {
+    color: var(--green);
+}
+.small {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+}
+.notice {
+    background: #fff7e4;
+    color: #6c5118;
+    padding: 13px;
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 1.9;
+    margin-bottom: 16px;
+}
+footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 18px 10px 28px;
+}
+.hidden {
+    display: none !important;
+}
+hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 16px 0;
+}
+@media (max-width: 360px) {
+    main {
+        padding: 12px;
+    }
+    .balance-amount {
+        font-size: 27px;
+    }
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>محفظة القرية</h1>
-<p>أموالك وخدماتك في مكان واحد</p>
+    <div class="header-inner">
+        <div class="brand">
+            <div class="logo">💳</div>
+            <div>
+                <h1>محفظة القرية</h1>
+                <p>أموالك وخدماتك في مكان واحد</p>
+            </div>
+        </div>
+    </div>
 </header>
 
 <main>
 
-<section class="card">
-<p class="small">رصيد تجريبي للاختبار فقط</p>
-<div class="balance" id="balance">10,000 ريال</div>
-<p class="small">رقم المحفظة: 1001</p>
-</section>
+    <section class="card">
+        <label class="label" for="currentUser">اختر الحساب التجريبي</label>
+        <select id="currentUser" class="user-select"></select>
+        <p class="small">تبديل الحساب هنا مخصص للاختبار فقط، وليس تسجيل دخول آمنًا.</p>
+    </section>
 
-<section class="card">
-<h3>تحويل الأموال</h3>
+    <section class="card balance-card">
+        <div class="balance-top">
+            <p>الرصيد المتاح للتجربة</p>
+            <span class="demo-badge">نسخة تجريبية</span>
+        </div>
+        <div class="balance-amount" id="balance">0 ريال</div>
+        <div class="account-info">
+            صاحب المحفظة: <strong id="userName">—</strong>
+        </div>
+        <div class="account-info" style="margin-top:7px">
+            رقم المحفظة: <strong id="walletNumber">—</strong>
+        </div>
+    </section>
 
-<label class="label" for="recipient">رقم محفظة المستلم</label>
-<input id="recipient" inputmode="numeric" placeholder="مثال: 1002">
+    <h2 class="section-title">الخدمات الرئيسية</h2>
 
-<label class="label" for="amount">المبلغ بالريال</label>
-<input id="amount" type="number" min="1" step="1" placeholder="أدخل المبلغ">
+    <section class="services">
+        <button class="service" onclick="showSection('transferSection')">
+            <span class="service-icon">💸</span>
+            تحويل الأموال
+        </button>
+        <button class="service" onclick="showSection('depositSection')">
+            <span class="service-icon">📥</span>
+            طلب إضافة رصيد
+        </button>
+        <button class="service" onclick="showSection('withdrawSection')">
+            <span class="service-icon">💵</span>
+            طلب سحب نقدي
+        </button>
+        <button class="service" onclick="showSection('rechargeSection')">
+            <span class="service-icon">📱</span>
+            شحن الهاتف
+        </button>
+        <button class="service" onclick="showSection('shoppingSection')">
+            <span class="service-icon">🛒</span>
+            مشتريات البقالة
+        </button>
+        <button class="service" onclick="showSection('historySection')">
+            <span class="service-icon">📋</span>
+            سجل المعاملات
+        </button>
+    </section>
 
-<button onclick="reviewTransfer()">مراجعة التحويل</button>
+    <section id="transferSection" class="card hidden">
+        <h2 class="section-title" style="margin-top:0">تحويل الأموال</h2>
 
-<div id="result" aria-live="polite"></div>
-</section>
+        <label class="label" for="recipient">رقم محفظة المستلم</label>
+        <input id="recipient" inputmode="numeric" placeholder="مثال: 1002">
 
-<section class="notice">
-هذه نسخة تجريبية تعمل داخل هذا المتصفح فقط.
-الأرصدة ليست أموالًا حقيقية، والتحويلات لا تصل إلى أشخاص آخرين.
-</section>
+        <label class="label" for="transferAmount">المبلغ بالريال</label>
+        <input id="transferAmount" type="number" min="1" step="1" placeholder="أدخل المبلغ">
+
+        <button class="primary" onclick="transferMoney()">مراجعة وتنفيذ التحويل التجريبي</button>
+        <button class="secondary" onclick="hideSections()">إغلاق</button>
+        <div id="transferMessage" class="message" aria-live="polite"></div>
+    </section>
+
+    <section id="depositSection" class="card hidden">
+        <h2 class="section-title" style="margin-top:0">طلب إضافة رصيد</h2>
+        <p class="small">هذه تجربة لتسجيل طلب فقط. لن تتم إضافة أموال حقيقية.</p>
+
+        <label class="label" for="depositAmount">المبلغ المطلوب</label>
+        <input id="depositAmount" type="number" min="1" step="1" placeholder="أدخل المبلغ">
+
+        <button class="primary" onclick="createRequest('إضافة رصيد','depositAmount')">تسجيل الطلب التجريبي</button>
+        <div id="depositMessage" class="message"></div>
+    </section>
+
+    <section id="withdrawSection" class="card hidden">
+        <h2 class="section-title" style="margin-top:0">طلب سحب نقدي</h2>
+        <p class="small">لن يتم صرف أي أموال حقيقية في هذه النسخة.</p>
+
+        <label class="label" for="withdrawAmount">المبلغ المطلوب سحبه</label>
+        <input id="withdrawAmount" type="number" min="1" step="1" placeholder="أدخل المبلغ">
+
+        <button class="primary" onclick="createRequest('سحب نقدي','withdrawAmount')">تسجيل طلب السحب التجريبي</button>
+        <div id="withdrawMessage" class="message"></div>
+    </section>
+
+    <section id="rechargeSection" class="card hidden">
+        <h2 class="section-title" style="margin-top:0">طلب شحن الهاتف</h2>
+
+        <label class="label" for="phone">رقم الهاتف</label>
+        <input id="phone" inputmode="tel" placeholder="أدخل رقم الهاتف">
+
+        <label class="label" for="network">شركة الاتصالات</label>
+        <select id="network" class="user-select">
+            <option value="يمن موبايل">يمن موبايل</option>
+            <option value="سبأفون">سبأفون</option>
+            <option value="YOU">YOU</option>
+        </select>
+
+        <label class="label" for="rechargeAmount">مبلغ الشحن</label>
+        <input id="rechargeAmount" type="number" min="1" step="1" placeholder="أدخل المبلغ">
+
+        <button class="primary" onclick="createRechargeRequest()">تسجيل طلب الشحن التجريبي</button>
+        <div id="rechargeMessage" class="message"></div>
+    </section>
+
+    <section id="shoppingSection" class="card hidden">
+        <h2 class="section-title" style="margin-top:0">مشتريات البقالة</h2>
+
+        <label class="label" for="productName">اسم المنتج</label>
+        <input id="productName" placeholder="مثال: دقيق">
+
+        <label class="label" for="purchaseAmount">قيمة المشتريات</label>
+        <input id="purchaseAmount" type="number" min="1" step="1" placeholder="أدخل المبلغ">
+
+        <button class="primary" onclick="buyProduct()">تسجيل عملية الشراء التجريبية</button>
+        <div id="shoppingMessage" class="message"></div>
+    </section>
+
+    <section id="historySection" class="card hidden">
+        <h2 class="section-title" style="margin-top:0">سجل المعاملات</h2>
+        <div id="historyList"></div>
+        <button class="secondary" onclick="hideSections()">إغلاق السجل</button>
+    </section>
+
+    <section class="card">
+        <h2 class="section-title" style="margin-top:0">عن المحفظة</h2>
+        <p class="small">
+            محفظة القرية مشروع تجريبي يهدف إلى تسهيل إدارة الأرصدة
+            والطلبات والمشتريات داخل المجتمع المحلي.
+        </p>
+    </section>
+
+    <div class="notice">
+        تنبيه: جميع الأرصدة والحسابات والعمليات في هذه الصفحة تجريبية
+        ومحفوظة داخل جلسة المتصفح فقط. لا تستخدمها لإيداع أموال حقيقية
+        أو لإجراء تحويلات مالية فعلية.
+    </div>
 
 </main>
 
 <footer>محفظة القرية © 2026</footer>
 
 <script>
-let balance = 10000;
+"use strict";
 
-function reviewTransfer() {
-    const recipient = document.getElementById("recipient").value.trim();
-    const amount = Number(document.getElementById("amount").value);
-    const result = document.getElementById("result");
+/*
+ * بيانات تجريبية فقط.
+ * لا تخزن أموالًا حقيقية ولا تمثل حسابات فعلية.
+ */
+
+const users = {
+    "1001": { name: "أحمد", balance: 10000 },
+    "1002": { name: "محمد", balance: 5000 },
+    "1003": { name: "علي", balance: 2000 },
+    "1004": { name: "فاطمة", balance: 7000 },
+    "1005": { name: "زينب", balance: 3000 }
+};
+
+let currentWallet = "1001";
+let transactions = [];
+let requestNumber = 1;
+
+const money = amount =>
+    amount.toLocaleString("en-US") + " ريال";
+
+function initialize() {
+    const select = document.getElementById("currentUser");
+
+    Object.keys(users).forEach(id => {
+        const option = document.createElement("option");
+        option.value = id;
+        option.textContent = users[id].name + " — " + id;
+        select.appendChild(option);
+    });
+
+    select.addEventListener("change", () => {
+        currentWallet = select.value;
+        render();
+        hideSections();
+    });
+
+    render();
+}
+
+function render() {
+    const user = users[currentWallet];
+
+    document.getElementById("balance").textContent =
+        money(user.balance);
+    document.getElementById("userName").textContent = user.name;
+    document.getElementById("walletNumber").textContent =
+        currentWallet;
+
+    renderHistory();
+}
+
+function showSection(id) {
+    hideSections();
+    document.getElementById(id).classList.remove("hidden");
+
+    if (id === "historySection") {
+        renderHistory();
+    }
+
+    document.getElementById(id).scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+function hideSections() {
+    document.querySelectorAll(
+        "#transferSection, #depositSection, #withdrawSection, " +
+        "#rechargeSection, #shoppingSection, #historySection"
+    ).forEach(section => section.classList.add("hidden"));
+}
+
+function showMessage(id, text, error = false) {
+    const box = document.getElementById(id);
+    box.textContent = text;
+    box.classList.toggle("error", error);
+}
+
+function validAmount(value) {
+    const amount = Number(value);
+    return Number.isSafeInteger(amount) && amount > 0
+        ? amount
+        : null;
+}
+
+function addTransaction(wallet, title, amount, type, details = "") {
+    transactions.unshift({
+        id: requestNumber++,
+        wallet,
+        title,
+        amount,
+        type,
+        details,
+        date: new Date().toLocaleString("ar")
+    });
+}
+
+function transferMoney() {
+    const recipient = document.getElementById("recipient")
+        .value.trim();
+    const amount = validAmount(
+        document.getElementById("transferAmount").value
+    );
 
     if (!/^\d{4,12}$/.test(recipient)) {
-        result.textContent = "أدخل رقم محفظة صحيحًا.";
+        showMessage(
+            "transferMessage",
+            "أدخل رقم محفظة صحيحًا.",
+            true
+        );
         return;
     }
 
-    if (recipient === "1001") {
-        result.textContent = "لا يمكنك التحويل إلى محفظتك نفسها.";
+    if (recipient === currentWallet) {
+        showMessage(
+            "transferMessage",
+            "لا يمكنك التحويل إلى محفظتك نفسها.",
+            true
+        );
         return;
     }
 
-    if (!Number.isSafeInteger(amount) || amount <= 0) {
-        result.textContent = "أدخل مبلغًا صحيحًا أكبر من صفر.";
+    if (!Object.prototype.hasOwnProperty.call(users, recipient)) {
+        showMessage(
+            "transferMessage",
+            "رقم المحفظة غير موجود في الحسابات التجريبية.",
+            true
+        );
         return;
     }
 
-    if (amount > balance) {
-        result.textContent = "الرصيد التجريبي غير كافٍ.";
+    if (!amount) {
+        showMessage(
+            "transferMessage",
+            "أدخل مبلغًا صحيحًا أكبر من صفر.",
+            true
+        );
         return;
     }
 
-    result.replaceChildren();
+    if (amount > users[currentWallet].balance) {
+        showMessage(
+            "transferMessage",
+            "رصيدك التجريبي غير كافٍ.",
+            true
+        );
+        return;
+    }
 
-    const summary = document.createElement("p");
-    summary.textContent =
-        "رقم المستلم: " + recipient +
-        " — المبلغ: " + amount.toLocaleString("ar") + " ريال";
-    result.appendChild(summary);
+    const senderName = users[currentWallet].name;
+    const recipientName = users[recipient].name;
 
-    const confirmButton = document.createElement("button");
-    confirmButton.textContent = "تأكيد التحويل التجريبي";
-    confirmButton.onclick = function() {
-        if (amount > balance) {
-            result.textContent = "الرصيد غير كافٍ.";
-            return;
+    const confirmed = confirm(
+        "مراجعة التحويل التجريبي\n\n" +
+        "من: " + senderName + " (" + currentWallet + ")\n" +
+        "إلى: " + recipientName + " (" + recipient + ")\n" +
+        "المبلغ: " + money(amount) + "\n\n" +
+        "هل تريد تنفيذ الاختبار؟"
+    );
+
+    if (!confirmed) {
+        showMessage("transferMessage", "تم إلغاء التحويل.");
+        return;
+    }
+
+    /*
+     * تحويل تجريبي داخل الذاكرة فقط.
+     * لا يمثل دفترًا ماليًا حقيقيًا.
+     */
+    users[currentWallet].balance -= amount;
+    users[recipient].balance += amount;
+
+    addTransaction(
+        currentWallet,
+        "تحويل إلى " + recipientName,
+        amount,
+        "out",
+        "رقم المحفظة: " + recipient
+    );
+
+    addTransaction(
+        recipient,
+        "استلام من " + senderName,
+        amount,
+        "in",
+        "رقم المحفظة: " + currentWallet
+    );
+
+    render();
+
+    showMessage(
+        "transferMessage",
+        "نجح التحويل التجريبي! أُرسل " +
+        money(amount) + " إلى " + recipientName +
+        ". التغيير موجود داخل هذه الصفحة فقط."
+    );
+
+    document.getElementById("transferAmount").value = "";
+}
+
+function createRequest(type, inputId) {
+    const amount = validAmount(
+        document.getElementById(inputId).value
+    );
+
+    const messageId = type === "إضافة رصيد"
+        ? "depositMessage"
+        : "withdrawMessage";
+
+    if (!amount) {
+        showMessage(
+            messageId,
+            "أدخل مبلغًا صحيحًا أكبر من صفر.",
+            true
+        );
+        return;
+    }
+
+    if (type === "سحب نقدي" &&
+        amount > users[currentWallet].balance) {
+        showMessage(
+            messageId,
+            "الرصيد التجريبي غير كافٍ.",
+            true
+        );
+        return;
+    }
+
+    addTransaction(
+        currentWallet,
+        "طلب " + type,
+        amount,
+        "request",
+        "طلب تجريبي رقم " + (requestNumber)
+    );
+
+    showMessage(
+        messageId,
+        "تم تسجيل طلب " + type + " تجريبيًا. " +
+        "لم يتم إضافة أو خصم أي أموال."
+    );
+
+    document.getElementById(inputId).value = "";
+    renderHistory();
+}
+
+function createRechargeRequest() {
+    const phone = document.getElementById("phone").value.trim();
+    const network = document.getElementById("network").value;
+    const amount = validAmount(
+        document.getElementById("rechargeAmount").value
+    );
+
+    if (!phone) {
+        showMessage(
+            "rechargeMessage",
+            "أدخل رقم الهاتف.",
+            true
+        );
+        return;
+    }
+
+    if (!amount) {
+        showMessage(
+            "rechargeMessage",
+            "أدخل مبلغ شحن صحيحًا.",
+            true
+        );
+        return;
+    }
+
+    addTransaction(
+        currentWallet,
+        "طلب شحن هاتف",
+        amount,
+        "request",
+        network + " — " + phone
+    );
+
+    showMessage(
+        "rechargeMessage",
+        "تم تسجيل طلب الشحن التجريبي لشبكة " +
+        network + " إلى الرقم " + phone +
+        ". لم يُنفّذ شحن حقيقي."
+    );
+
+    document.getElementById("phone").value = "";
+    document.getElementById("rechargeAmount").value = "";
+    renderHistory();
+}
+
+function buyProduct() {
+    const product = document.getElementById("productName")
+        .value.trim();
+    const amount = validAmount(
+        document.getElementById("purchaseAmount").value
+    );
+
+    if (!product) {
+        showMessage(
+            "shoppingMessage",
+            "اكتب اسم المنتج.",
+            true
+        );
+        return;
+    }
+
+    if (!amount) {
+        showMessage(
+            "shoppingMessage",
+            "أدخل قيمة صحيحة للمشتريات.",
+            true
+        );
+        return;
+    }
+
+    if (amount > users[currentWallet].balance) {
+        showMessage(
+            "shoppingMessage",
+            "رصيدك التجريبي غير كافٍ.",
+            true
+        );
+        return;
+    }
+
+    if (!confirm(
+        "تأكيد شراء تجريبي\n" +
+        "المنتج: " + product + "\n" +
+        "المبلغ: " + money(amount) + "\n\n" +
+        "هل تريد المتابعة؟"
+    )) {
+        return;
+    }
+
+    users[currentWallet].balance -= amount;
+
+    addTransaction(
+        currentWallet,
+        "شراء: " + product,
+        amount,
+        "out",
+        "مشتريات البقالة — تجربة فقط"
+    );
+
+    render();
+
+    showMessage(
+        "shoppingMessage",
+        "تم تسجيل الشراء التجريبي. لم يحدث دفع حقيقي."
+    );
+
+    document.getElementById("productName").value = "";
+    document.getElementById("purchaseAmount").value = "";
+}
+
+function renderHistory() {
+    const list = document.getElementById("historyList");
+    list.replaceChildren();
+
+    const ownTransactions = transactions.filter(
+        tx => tx.wallet === currentWallet
+    );
+
+    if (ownTransactions.length === 0) {
+        const empty = document.createElement("p");
+        empty.className = "small";
+        empty.textContent = "لا توجد معاملات تجريبية لهذا الحساب.";
+        list.appendChild(empty);
+        return;
+    }
+
+    ownTransactions.forEach(tx => {
+        const row = document.createElement("div");
+        row.className = "transaction";
+
+        const details = document.createElement("div");
+
+        const title = document.createElement("div");
+        title.className = "tx-title";
+        title.textContent = tx.title;
+
+        const date = document.createElement("div");
+        date.className = "tx-date";
+        date.textContent = tx.date +
+            (tx.details ? " — " + tx.details : "");
+
+        details.append(title, date);
+
+        const amount = document.createElement("div");
+        amount.className = "tx-amount";
+
+        if (tx.type === "out") {
+            amount.classList.add("outgoing");
+            amount.textContent = "− " + money(tx.amount);
+        } else if (tx.type === "in") {
+            amount.classList.add("incoming");
+            amount.textContent = "+ " + money(tx.amount);
+        } else {
+            amount.textContent = money(tx.amount);
         }
 
-        balance -= amount;
-        document.getElementById("balance").textContent =
-            balance.toLocaleString("ar") + " ريال";
-
-        result.textContent =
-            "تم تسجيل التحويل التجريبي في هذه الصفحة. لم يُرسل المال إلى محفظة أخرى.";
-    };
-    result.appendChild(confirmButton);
-
-    const cancelButton = document.createElement("button");
-    cancelButton.textContent = "إلغاء";
-    cancelButton.className = "secondary";
-    cancelButton.onclick = function() {
-        result.textContent = "تم إلغاء التحويل.";
-    };
-    result.appendChild(cancelButton);
+        row.append(details, amount);
+        list.appendChild(row);
+    });
 }
+
+initialize();
 </script>
 
 </body>
