@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>محفظة القرية</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial;background:#f2f6f3;color:#18372b}
+header{background:#176b45;color:white;padding:24px 18px;border-radius:0 0 22px 22px}
+header h1{margin:0 0 8px;font-size:25px}
+header p{margin:0;font-size:14px}
+main{padding:18px;max-width:600px;margin:auto}
+.card{background:white;padding:20px;border-radius:16px;margin-bottom:16px;box-shadow:0 3px 12px #0000000a}
+.label{display:block;margin:12px 0 7px}
+input{width:100%;padding:13px;border:1px solid #ccd9d0;border-radius:10px;font-size:16px}
+button{width:100%;padding:14px;border:0;border-radius:10px;background:#176b45;color:white;font-size:16px;margin-top:14px;cursor:pointer}
+.secondary{background:#e4f1e8;color:#176b45}
+.balance{font-size:28px;color:#176b45;font-weight:bold}
+.small{font-size:13px;color:#687970}
+.notice{padding:12px;background:#e4f1e8;border-radius:10px;line-height:1.8;font-size:13px}
+h3{margin-top:0}
+#result{margin-top:12px;line-height:1.8;overflow-wrap:anywhere}
+footer{text-align:center;padding:20px;color:#75857b;font-size:12px}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>محفظة القرية</h1>
+<p>أموالك وخدماتك في مكان واحد</p>
+</header>
+
+<main>
+
+<section class="card">
+<p class="small">رصيد تجريبي للاختبار فقط</p>
+<div class="balance" id="balance">10,000 ريال</div>
+<p class="small">رقم المحفظة: 1001</p>
+</section>
+
+<section class="card">
+<h3>تحويل الأموال</h3>
+
+<label class="label" for="recipient">رقم محفظة المستلم</label>
+<input id="recipient" inputmode="numeric" placeholder="مثال: 1002">
+
+<label class="label" for="amount">المبلغ بالريال</label>
+<input id="amount" type="number" min="1" step="1" placeholder="أدخل المبلغ">
+
+<button onclick="reviewTransfer()">مراجعة التحويل</button>
+
+<div id="result" aria-live="polite"></div>
+</section>
+
+<section class="notice">
+هذه نسخة تجريبية تعمل داخل هذا المتصفح فقط.
+الأرصدة ليست أموالًا حقيقية، والتحويلات لا تصل إلى أشخاص آخرين.
+</section>
+
+</main>
+
+<footer>محفظة القرية © 2026</footer>
+
+<script>
+let balance = 10000;
+
+function reviewTransfer() {
+    const recipient = document.getElementById("recipient").value.trim();
+    const amount = Number(document.getElementById("amount").value);
+    const result = document.getElementById("result");
+
+    if (!/^\d{4,12}$/.test(recipient)) {
+        result.textContent = "أدخل رقم محفظة صحيحًا.";
+        return;
+    }
+
+    if (recipient === "1001") {
+        result.textContent = "لا يمكنك التحويل إلى محفظتك نفسها.";
+        return;
+    }
+
+    if (!Number.isSafeInteger(amount) || amount <= 0) {
+        result.textContent = "أدخل مبلغًا صحيحًا أكبر من صفر.";
+        return;
+    }
+
+    if (amount > balance) {
+        result.textContent = "الرصيد التجريبي غير كافٍ.";
+        return;
+    }
+
+    result.replaceChildren();
+
+    const summary = document.createElement("p");
+    summary.textContent =
+        "رقم المستلم: " + recipient +
+        " — المبلغ: " + amount.toLocaleString("ar") + " ريال";
+    result.appendChild(summary);
+
+    const confirmButton = document.createElement("button");
+    confirmButton.textContent = "تأكيد التحويل التجريبي";
+    confirmButton.onclick = function() {
+        if (amount > balance) {
+            result.textContent = "الرصيد غير كافٍ.";
+            return;
+        }
+
+        balance -= amount;
+        document.getElementById("balance").textContent =
+            balance.toLocaleString("ar") + " ريال";
+
+        result.textContent =
+            "تم تسجيل التحويل التجريبي في هذه الصفحة. لم يُرسل المال إلى محفظة أخرى.";
+    };
+    result.appendChild(confirmButton);
+
+    const cancelButton = document.createElement("button");
+    cancelButton.textContent = "إلغاء";
+    cancelButton.className = "secondary";
+    cancelButton.onclick = function() {
+        result.textContent = "تم إلغاء التحويل.";
+    };
+    result.appendChild(cancelButton);
+}
+</script>
+
+</body>
+</html>
